@@ -1,55 +1,132 @@
-# Jira API Scripts
+# Jira CLI
 
-This repository contains Python scripts for interacting with Jira's REST API.
+> This repository was created by DeepSeek-V3
 
-## Scripts
+A command line interface for managing Jira issues.
 
-### jira_get_issue.py
-Fetches details of a specific Jira issue.
+## Installation
 
-#### Usage:
+1. Install the package:
 ```bash
-python3 jira_get_issue.py ISSUE_KEY
+pip install .
 ```
 
-#### Output:
-- Issue key
-- Summary
-- Status
-- Description (if available)
-
-### jira_create_issue.py
-Creates a new Jira issue with customizable fields.
-
-#### Usage:
+2. Configure your credentials:
 ```bash
-python3 jira_create_issue.py --project PROJECT_KEY --summary "Issue Summary" --issuetype "Issue Type" [--description "Description"] [--fields '{"field": "value"}']
+jira-cli configure
 ```
 
-#### Examples:
-1. Create a basic issue:
+## Current Features
+
+### Issue Management
+- Create issues
+- Get issue details
+- Update issues
+- Delete issues
+- Add comments
+- Manage attachments
+- Transition issues through workflows
+
+### Search & Monitoring
+- Search issues with JQL
+- Watch/unwatch issues
+- Dashboard for recent activity
+
+### Configuration
+- Interactive configuration setup
+- Environment variable support
+- Multiple project support
+
+## Usage Examples
+
+### Create an Issue
 ```bash
-python3 jira_create_issue.py --project PROJECT --summary "Test Issue" --issuetype "Task"
+jira-cli create \
+  --project PROJECT_KEY \
+  --summary "Issue Summary" \
+  --type "Issue Type" \
+  [--description "Description"] \
+  [--fields '{"field": "value"}']
 ```
 
-#### Output:
-- Issue key
-- Issue URL
+### Examples
 
-## Setup
-
-1. Set environment variables:
+1. Create a basic task:
 ```bash
-export JIRA_DOMAIN="issues.example.com"
-export JIRA_API_TOKEN="your_personal_access_token"
+jira-cli create --project ABC --summary "Fix login bug" --type "Task"
 ```
 
-2. Install dependencies:
+2. Create an issue with description and custom fields:
 ```bash
-pip install -r requirements.txt
+jira-cli create --project ABC --summary "New feature" --type "Story" \
+  --description "Implement new search functionality" \
+  --fields '{"priority": {"name": "High"}}'
 ```
+
+## Configuration
+
+The CLI stores your credentials in `~/.jira_cli_config`. You can either:
+- Run `jira-cli configure` to set up credentials interactively
+- Set environment variables:
+  ```bash
+  export JIRA_DOMAIN="your-domain.atlassian.net"
+  export JIRA_API_TOKEN="your_api_token"
+  ```
+
+## Planned Changes
+
+1. **Authentication Improvements**
+- OAuth authentication support
+- Token refresh functionality
+- Session timeout handling
+
+2. **Dashboard Enhancements**
+- Filtering by issue type
+- Charts/graphs for visual representation
+- Custom fields in dashboard view
+- Pagination for large result sets
+
+3. **Configuration Management**
+- Multiple Jira instances support
+- Configuration profiles
+- Configuration validation
+
+4. **Error Handling**
+- Improved error messages
+- Retry logic for failed requests
+- Better rate limiting handling
+
+5. **Output Formatting**
+- JSON/CSV output formats
+- Color-coded status indicators
+- Table formatting options
+
+6. **Integration Features**
+- Webhook support
+- CI/CD tool integration
+- Jira Service Management support
+
+7. **Performance Improvements**
+- Caching for frequently accessed data
+- Parallel request handling
+- Optimized API call patterns
+
+8. **Documentation**
+- Comprehensive CLI help
+- Man pages for each command
+- Common workflow examples
+
+9. **Testing**
+- Unit tests for all commands
+- Integration tests
+- CI/CD pipeline for testing
+
+10. **Security**
+- Secure credential storage
+- Audit logging
+- Role-based access control
 
 ## Requirements
-- Python 3.x
-- requests library
-- Valid Jira API token with appropriate permissions
+- Python 3.7+
+- Click
+- Requests
