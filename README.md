@@ -130,3 +130,70 @@ The CLI stores your credentials in `~/.jira_cli_config`. You can either:
 - Python 3.7+
 - Click
 - Requests
+
+## Quick Start
+
+1. Install the CLI:
+```bash
+pip install .
+```
+
+2. Configure your Jira credentials:
+```bash
+jira-cli configure
+```
+
+3. Start using the CLI:
+```bash
+jira-cli create --project ABC --summary "New Issue" --type "Task"
+```
+
+## Command Reference
+
+### Core Commands
+- `create`: Create new issues
+- `get`: Get issue details
+- `update`: Modify existing issues
+- `delete`: Remove issues
+- `comment`: Manage issue comments
+- `transition`: Move issues through workflows
+
+### Advanced Commands
+- `search`: Find issues using JQL
+- `watch`: Manage issue watchers
+- `dashboard`: View recent activity
+- `configure`: Manage CLI settings
+- `attachment`: Handle issue attachments
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Authentication Errors**
+- Verify your API token is valid
+- Check your JIRA_DOMAIN is correct
+- Ensure your token has necessary permissions
+
+2. **API Version Mismatch**
+- Check your Jira instance version
+- Verify configured API version matches
+- Update configuration if needed
+
+3. **Rate Limiting**
+- Implement retry logic in your scripts
+- Use bulk operations when possible
+- Consider implementing caching
+
+## Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
+4. Include tests for new features
+5. Update documentation as needed
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
