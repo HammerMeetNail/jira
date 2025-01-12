@@ -7,6 +7,7 @@ def main():
     # Get environment variables
     JIRA_DOMAIN = os.getenv('JIRA_DOMAIN')
     JIRA_API_TOKEN = os.getenv('JIRA_API_TOKEN')
+    JIRA_API_VERSION = os.getenv('JIRA_API_VERSION', '2')  # Default to version 2 if not specified
 
     if not all([JIRA_DOMAIN, JIRA_API_TOKEN]):
         print("Error: Please set JIRA_DOMAIN and JIRA_API_TOKEN environment variables")
@@ -25,7 +26,7 @@ def main():
 
     # Make request to get issue details
     try:
-        api_url = f"https://{JIRA_DOMAIN}/rest/api/2/issue/{args.issue_key}"
+        api_url = f"https://{JIRA_DOMAIN}/rest/api/{JIRA_API_VERSION}/issue/{args.issue_key}"
         print(f"Making request to: {api_url}")
         
         response = requests.get(
