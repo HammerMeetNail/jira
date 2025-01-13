@@ -2,6 +2,7 @@ import click
 import requests
 import sys
 from jira_cli.utils.config import get_config
+from jira_cli.utils.logging import logger
 
 @click.command()
 @click.argument('issue_key')
@@ -25,9 +26,23 @@ def delete(issue_key):
             click.echo("Deletion cancelled")
             return
             
+        # Log request details
+        logger.log_request(
+            method='DELETE',
+            url=api_url,
+            headers=headers
+        )
+        
         response = requests.delete(
             api_url,
             headers=headers
+        )
+        
+        # Log response details
+        logger.log_response(
+            status_code=response.status_code,
+            headers=response.headers,
+            data=response.text if response.content else None
         )
         
         if response.status_code == 204:

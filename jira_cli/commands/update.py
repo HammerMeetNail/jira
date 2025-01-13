@@ -2,6 +2,7 @@ import click
 import requests
 import sys
 from jira_cli.utils.config import get_config
+from jira_cli.utils.logging import logger
 
 @click.command()
 @click.argument('issue_key')
@@ -40,10 +41,26 @@ def update(issue_key, summary, description, fields):
 
     try:
         api_url = f"https://{config['domain']}/rest/api/{config.get('api_version', '2')}/issue/{issue_key}"
+        
+        # Log request details
+        logger.log_request(
+            method='PUT',
+            url=api_url,
+            headers=headers,
+            data=update_data
+        )
+        
         response = requests.put(
             api_url,
             headers=headers,
-            json={'fields': update_data}
+            json=update_data
+        )
+        
+        # Log response details
+        logger.log_response(
+            status_code=response.status_code,
+            headers=response.headers,
+            data=response.json() if response.content else None
         )
         
         if response.status_code == 204:

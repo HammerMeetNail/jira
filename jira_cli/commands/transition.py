@@ -2,6 +2,7 @@ import click
 import requests
 import sys
 from jira_cli.utils.config import get_config
+from jira_cli.utils.logging import logger
 
 @click.command()
 @click.argument('issue_key')
@@ -23,7 +24,21 @@ def transition(issue_key, transition, comment):
     # First get available transitions
     try:
         transitions_url = f"https://{config['domain']}/rest/api/{config.get('api_version', '2')}/issue/{issue_key}/transitions"
+        # Log request details
+        logger.log_request(
+            method='GET',
+            url=transitions_url,
+            headers=headers
+        )
+        
         response = requests.get(transitions_url, headers=headers)
+        
+        # Log response details
+        logger.log_response(
+            status_code=response.status_code,
+            headers=response.headers,
+            data=response.json() if response.content else None
+        )
         
         if response.status_code != 200:
             click.echo(f"Error getting transitions: {response.status_code}")
@@ -63,10 +78,25 @@ def transition(issue_key, transition, comment):
 
         # Execute transition
         transition_url = f"https://{config['domain']}/rest/api/{config.get('api_version', '2')}/issue/{issue_key}/transitions"
+        # Log request details
+        logger.log_request(
+            method='POST',
+            url=transition_url,
+            headers=headers,
+            data=transition_data
+        )
+        
         response = requests.post(
             transition_url,
             headers=headers,
             json=transition_data
+        )
+        
+        # Log response details
+        logger.log_response(
+            status_code=response.status_code,
+            headers=response.headers,
+            data=response.text if response.content else None
         )
         
         if response.status_code == 204:

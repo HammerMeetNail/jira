@@ -1,10 +1,12 @@
 import click
-from jira_cli.commands import create, configure, get, update, comment, transition, attachment, search, watch, dashboard, delete
+from jira_cli.commands import configure, create, get, update, delete, comment, watch, dashboard, attachment, search, transition
+from jira_cli.utils.logging import Logger, logger
 
 @click.group()
-def cli():
-    """Jira CLI tool for managing issues"""
-    pass
+@click.option('--verbose', '-v', is_flag=True, help='Enable verbose logging')
+def cli(verbose):
+    """Jira CLI - Command line interface for Jira"""
+    logger.verbose = verbose
 
 cli.add_command(create)
 cli.add_command(configure)
