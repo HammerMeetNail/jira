@@ -37,6 +37,20 @@ jira-cli configure
 - Environment variable support
 - Multiple project support
 
+### Verbose Logging
+- Detailed logging of all API requests and responses
+- Logs include:
+  - Request method and URL
+  - Request headers
+  - Request payload (if applicable)
+  - Response status code
+  - Response headers
+  - Response body (truncated if large)
+- Enable verbose mode by adding the `--verbose` flag before the command:
+  ```bash
+  jira-cli --verbose [command]
+  ```
+
 ## Usage Examples
 
 ### Create an Issue

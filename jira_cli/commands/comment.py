@@ -2,6 +2,7 @@ import click
 import requests
 import sys
 from jira_cli.utils.config import get_config
+from jira_cli.utils.logging import logger
 
 @click.command()
 @click.argument('issue_key')
@@ -32,10 +33,25 @@ def comment(issue_key, comment, visibility):
 
     try:
         api_url = f"https://{config['domain']}/rest/api/{config.get('api_version', '2')}/issue/{issue_key}/comment"
+        # Log request details
+        logger.log_request(
+            method='POST',
+            url=api_url,
+            headers=headers,
+            data=comment_data
+        )
+        
         response = requests.post(
             api_url,
             headers=headers,
             json=comment_data
+        )
+        
+        # Log response details
+        logger.log_response(
+            status_code=response.status_code,
+            headers=response.headers,
+            data=response.json() if response.content else None
         )
         
         if response.status_code == 201:
