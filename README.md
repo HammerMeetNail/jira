@@ -204,6 +204,27 @@ jira-cli create --project ABC --summary "New Issue" --type "Task"
 - `comment`: Manage issue comments
 - `transition`: Move issues through workflows
 
+#### Transition Command Usage
+
+List available transitions for an issue:
+```bash
+jira-cli transition ISSUE-KEY --list
+```
+
+Execute a transition using either the transition ID or name:
+```bash
+# Using transition ID
+jira-cli transition ISSUE-KEY --transition TRANSITION_ID
+
+# Using transition name
+jira-cli transition ISSUE-KEY --transition "Transition Name"
+```
+
+Add a comment during transition:
+```bash
+jira-cli transition ISSUE-KEY --transition "Transition Name" --comment "Your comment here"
+```
+
 ### Advanced Commands
 - `search`: Find issues using JQL
 - `watch`: Manage issue watchers

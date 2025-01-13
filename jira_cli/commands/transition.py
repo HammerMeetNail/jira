@@ -6,10 +6,11 @@ from jira_cli.utils.logging import logger
 
 @click.command()
 @click.argument('issue_key')
-@click.option('--transition', required=True, help='Transition ID or name')
+@click.option('--transition', help='Transition ID or name')
 @click.option('--comment', help='Comment to add with the transition')
-def transition(issue_key, transition, comment):
-    """Transition a Jira issue through its workflow"""
+@click.option('--list', is_flag=True, help='List available transitions')
+def transition(issue_key, transition, comment, list):
+    """Transition a Jira issue through its workflow or list available transitions"""
     config = get_config()
     if not config:
         click.echo("Error: Configuration not found. Please run 'jira-cli configure' first.")
@@ -21,8 +22,8 @@ def transition(issue_key, transition, comment):
         'Authorization': f'Bearer {config["api_token"]}'
     }
 
-    # First get available transitions
     try:
+        # First get available transitions
         transitions_url = f"https://{config['domain']}/rest/api/{config.get('api_version', '2')}/issue/{issue_key}/transitions"
         # Log request details
         logger.log_request(
@@ -46,8 +47,19 @@ def transition(issue_key, transition, comment):
             sys.exit(1)
             
         transitions = response.json()['transitions']
-        transition_id = None
         
+        # If --list flag is set, just show available transitions
+        if list:
+            click.echo(f"Available transitions for issue {issue_key}:")
+            for t in transitions:
+                click.echo(f"  {t['id']}: {t['name']}")
+            return
+            
+        if not transition:
+            click.echo("Error: --transition is required unless using --list")
+            sys.exit(1)
+            
+        transition_id = None
         # Try to match by ID or name
         for t in transitions:
             if str(t['id']) == transition or t['name'].lower() == transition.lower():
@@ -107,7 +119,7 @@ def transition(issue_key, transition, comment):
             sys.exit(1)
             
     except requests.exceptions.RequestException as e:
-        click.echo(f"Error transitioning issue: {e}")
+        click.echo(f"Error: {e}")
         if hasattr(e, 'response'):
             click.echo(f"Status code: {e.response.status_code}")
             click.echo(f"Response content: {e.response.text[:500]}")
