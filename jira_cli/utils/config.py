@@ -27,11 +27,12 @@ def get_config() -> Dict:
     
     return config
 
-def save_config(domain: str, api_token: str):
+def save_config(domain: str, api_token: str, api_version: str = '2'):
     """Save configuration to file"""
     config = {
         'domain': domain,
-        'api_token': api_token
+        'api_token': api_token,
+        'api_version': api_version
     }
     with open(CONFIG_FILE, 'w') as f:
         json.dump(config, f)

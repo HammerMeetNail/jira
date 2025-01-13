@@ -65,13 +65,45 @@ jira-cli create --project ABC --summary "New feature" --type "Story" \
 
 ## Configuration
 
-The CLI stores your credentials in `~/.jira_cli_config`. You can either:
-- Run `jira-cli configure` to set up credentials interactively
-- Set environment variables:
-  ```bash
-  export JIRA_DOMAIN="your-domain.atlassian.net"
-  export JIRA_API_TOKEN="your_api_token"
-  ```
+The CLI uses a configuration file located at `~/.jira_cli_config` to store settings. Here's how to set it up:
+
+1. **Interactive Setup**
+   Run the configuration wizard:
+   ```bash
+   jira-cli configure
+   ```
+   This will prompt for:
+   - Jira domain (e.g., your-domain.atlassian.net)
+   - API token
+   - API version (defaults to 2)
+
+2. **Environment Variables**
+   Alternatively, you can configure using environment variables:
+   ```bash
+   export JIRA_DOMAIN="your-domain.atlassian.net"
+   export JIRA_API_TOKEN="your_api_token"
+   export JIRA_API_VERSION="2"  # Optional, defaults to 2
+   ```
+
+3. **Configuration File**
+   The configuration is stored in `~/.jira_cli_config` with this format:
+   ```json
+   {
+     "domain": "your-domain.atlassian.net",
+     "api_token": "your_api_token",
+     "api_version": "2"
+   }
+   ```
+
+4. **Example Setup**
+   Here's a complete example using environment variables:
+   ```bash
+   export JIRA_DOMAIN="mycompany.atlassian.net"
+   export JIRA_API_TOKEN="abc123xyz456"
+   export JIRA_API_VERSION="3"  # For Jira Cloud API v3
+   ```
+
+The CLI will automatically use the updated configuration on the next command execution.
 
 ## Planned Changes
 
