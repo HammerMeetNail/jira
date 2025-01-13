@@ -28,6 +28,13 @@ def get(issue_key):
             click.echo(f"Summary: {issue['fields']['summary']}")
             click.echo(f"Description: {issue['fields']['description']}")
             click.echo(f"Status: {issue['fields']['status']['name']}")
+            click.echo(f"Priority: {issue['fields']['priority']['name'] if issue['fields']['priority'] else 'None'}")
+            click.echo(f"Assignee: {issue['fields']['assignee']['displayName'] if issue['fields']['assignee'] else 'Unassigned'}")
+            click.echo(f"Reporter: {issue['fields']['reporter']['displayName'] if issue['fields']['reporter'] else 'None'}")
+            click.echo(f"Watchers: {issue['fields']['watches']['watchCount']}")
+            if issue['fields'].get('watchers'):
+                click.echo(f"Watchers List: {', '.join([w['displayName'] for w in issue['fields']['watchers']])}")
+            click.echo(f"Labels: {', '.join(issue['fields']['labels']) if issue['fields']['labels'] else 'None'}")
             click.echo(f"URL: https://{config['domain']}/browse/{issue['key']}")
         else:
             click.echo(f"Error getting issue: {response.status_code}")
