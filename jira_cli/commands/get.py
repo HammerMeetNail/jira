@@ -1,4 +1,5 @@
 import click
+import sys
 from jira_cli.utils.api import make_request
 from jira_cli.utils.config import get_config
 from jira_cli.utils.logging import logger
